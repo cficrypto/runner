@@ -171,7 +171,10 @@ class Runner(runner.Runner):
                     vsim_args.append("-do 'source %s/tcl_files/%s; run_and_exit;'" % (self.__get_rtl_path(), vsim_script))
 
             if not self.get_json().get('**/runner/boot_from_flash').get():
-                tcl_args.append('-gLOAD_L2=JTAG')
+                if self.get_json().get('**/vsim/fast_preload').get():
+                    tcl_args.append('-gLOAD_L2=FAST_DEBUG_PRELOAD')
+                else:
+                    tcl_args.append('-gLOAD_L2=JTAG')
 
             if self.get_json().get_child_str('**/chip/name') == 'vivosoc3':
                 tcl_args.append("-gBOOT_ADDR=32'h1C004000")
