@@ -61,7 +61,9 @@ class Platform(object):
             commands = self.config.getArgs().command
             if len(commands) == 0: commands = ['run']
             for command in commands:
-                if self.execCommand(command) != 0: return 1
+                ret = self.execCommand(command)
+                if ret != 0:
+                    return ret
             return 0
 
 
