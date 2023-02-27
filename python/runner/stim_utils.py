@@ -31,7 +31,7 @@ import argparse
 class stim(object):
 
 
-  def __init__(self, verbose=False):
+  def __init__(self, verbose=True):
     self.binaries = []
     self.mem = {}
     self.verbose = verbose
@@ -73,7 +73,7 @@ class stim(object):
     value &= ~(((1<<width) - 1) << (shift*8))
     value |= int.from_bytes(data[0:iter_size], byteorder='little') << (shift*8)
 
-    self.mem[str(aligned_base)] = value
+    self.mem[str(aligned_base)] = (value & 0x00ffffffff) | 0xab00000000
 
     return iter_size
 
@@ -151,7 +151,7 @@ class stim(object):
 
   def gen_stim_slm_64(self, stim_file):
 
-    self.__parse_binaries(8)
+    self.__parse_binaries(4)
 
     self.__gen_stim_slm(stim_file, 8)
 
